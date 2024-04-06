@@ -14,6 +14,10 @@ namespace ForDD.API.Controllers
     {
         private readonly IReportService _reportService;
 
+        public ReportController(IReportService reportService)
+        {
+            _reportService = reportService;
+        }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

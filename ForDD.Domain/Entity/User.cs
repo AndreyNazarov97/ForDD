@@ -21,9 +21,9 @@ namespace ForDD.Domain.Entity
 
         public DateTime CreatedAt { get; set; }
 
-        public long UpdatedBy { get; set; }
+        public long? UpdatedBy { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
     }
 }

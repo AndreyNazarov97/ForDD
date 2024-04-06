@@ -37,14 +37,15 @@ namespace ForDD.Application.Services
         /// <inheritdoc/>
         public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId)
         {
-            ReportDto[] reports;
+            ReportDto[] reportsDto;
 
             try
             {
-                reports = await _reportRepository.GetAll()
+                var reports = await _reportRepository.GetAll()
                     .Where(x => x.UserId == userId)
-                    .Select(r => new ReportDto(r.Id, r.Name, r.Description, r.CreatedAt.ToLongDateString()))
                     .ToArrayAsync();
+
+                reportsDto = reports.Select(r => new ReportDto(r.Id, r.Name, r.Description, r.CreatedAt.ToLongDateString())).ToArray();
             }
             catch (Exception ex)
             {
@@ -57,9 +58,9 @@ namespace ForDD.Application.Services
                 };
             }
 
-            if (!reports.Any())
+            if (!reportsDto.Any())
             {
-                _logger.Warning(ErrorMessages.ReportsNotFound, reports.Length);
+                _logger.Warning(ErrorMessages.ReportsNotFound, reportsDto.Length);
 
                 return new CollectionResult<ReportDto>()
                 {
@@ -69,21 +70,22 @@ namespace ForDD.Application.Services
             }
             return new CollectionResult<ReportDto>()
             {
-                Data = reports,
-                Count = reports.Length
+                Data = reportsDto,
+                Count = reportsDto.Length
             };
         }
 
         /// <inheritdoc/>
-        public async Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
+        public  async Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
         {
-            ReportDto report;
+            ReportDto reportDto;
 
             try
             {
-                report = await _reportRepository.GetAll()
-                    .Select(r => new ReportDto(r.Id, r.Name, r.Description, r.CreatedAt.ToLongDateString()))
+                var report = await _reportRepository.GetAll()
                     .FirstOrDefaultAsync(x => x.Id == id);
+
+                reportDto = new ReportDto(report.Id, report.Name, report.Description, report.CreatedAt.ToLongDateString());
             }
             catch(Exception ex) 
             {
@@ -96,9 +98,9 @@ namespace ForDD.Application.Services
                 };
             }
 
-            if (report == null)
+            if (reportDto == null)
             {
-                _logger.Warning($"Report with {id} not found");
+                _logger.Warning($"Report with id:{id} not found", id);
 
                 return new BaseResult<ReportDto>()
                 {
@@ -109,7 +111,7 @@ namespace ForDD.Application.Services
 
             return new BaseResult<ReportDto>()
             {
-                Data = report,
+                Data = reportDto,
             };
         }
 
