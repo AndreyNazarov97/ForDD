@@ -70,6 +70,15 @@ namespace ForDD.Application.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Report already exist.
+        /// </summary>
+        internal static string ReportAlreadyExist {
+            get {
+                return ResourceManager.GetString("ReportAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Report not Found.
         /// </summary>
         internal static string ReportNotFound {
@@ -84,6 +93,15 @@ namespace ForDD.Application.Resources {
         internal static string ReportsNotFound {
             get {
                 return ResourceManager.GetString("ReportsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User not found.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }
