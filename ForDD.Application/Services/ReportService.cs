@@ -116,7 +116,7 @@ namespace ForDD.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task<BaseResult<ReportDto>> CreateReportByIdAsync(CreateReportDto dto)
+        public async Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto dto)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace ForDD.Application.Services
                 {
                     Name = dto.Name,
                     Description = dto.Description,
-                    UserId = user.Id
+                    UserId = user.Id,
                 };
                 await _reportRepository.CreateAsync(report);
 
@@ -191,7 +191,7 @@ namespace ForDD.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task<BaseResult<ReportDto>> UpdateReportByIdAsync(UpdateReportDto dto)
+        public async Task<BaseResult<ReportDto>> UpdateReportAsync(UpdateReportDto dto)
         {
             try
             {

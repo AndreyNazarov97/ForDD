@@ -33,7 +33,7 @@ namespace ForDD.Domain.Interfaces.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public Task<BaseResult<ReportDto>> CreateReportByIdAsync(CreateReportDto dto);
+        public Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto dto);
 
         /// <summary>
         /// Удаление отчета по идентификатору
@@ -47,7 +47,7 @@ namespace ForDD.Domain.Interfaces.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<BaseResult<ReportDto>> UpdateReportByIdAsync(UpdateReportDto dto);
+        public Task<BaseResult<ReportDto>> UpdateReportAsync(UpdateReportDto dto);
 
     }
 }
