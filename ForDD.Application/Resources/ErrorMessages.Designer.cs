@@ -70,6 +70,15 @@ namespace ForDD.Application.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Passwords not equal.
+        /// </summary>
+        internal static string PasswordsNotEqual {
+            get {
+                return ResourceManager.GetString("PasswordsNotEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Report already exist.
         /// </summary>
         internal static string ReportAlreadyExist {
@@ -97,11 +106,29 @@ namespace ForDD.Application.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на User Already exist.
+        /// </summary>
+        internal static string UserAlreadyExist {
+            get {
+                return ResourceManager.GetString("UserAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на User not found.
         /// </summary>
         internal static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Wrong password.
+        /// </summary>
+        internal static string WrongPassword {
+            get {
+                return ResourceManager.GetString("WrongPassword", resourceCulture);
             }
         }
     }

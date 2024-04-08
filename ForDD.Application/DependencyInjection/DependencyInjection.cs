@@ -15,6 +15,7 @@ namespace ForDD.Application.DependencyInjection
         public static void AddApplication(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(ReportMapping));
+            services.AddAutoMapper(typeof(UserMapping));
 
             InitServices(services);
         }
@@ -27,6 +28,8 @@ namespace ForDD.Application.DependencyInjection
             services.AddScoped<IValidator<UpdateReportDto>, UpdateReportValidator>();
             
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenService, TokenService>();
 
 
         }

@@ -13,10 +13,13 @@ namespace ForDD.Domain.Enum
         ReportsNotFound = 0,
         ReportNotFound = 1,
         ReportAlreadyExist = 2,
-        
+
+        InternalServerError = 10,
 
         UserNotFound = 11,
 
-        InternalServerError = 10,
+        PasswordsNotEqual = 21,
+        UserAlreadyExist = 22,
+        WrongPassword = 23,
     }
 }

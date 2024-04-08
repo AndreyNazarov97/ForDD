@@ -2,10 +2,15 @@ using ForDD.DAL.DependencyInjection;
 using ForDD.Application.DependencyInjection;
 using Serilog;
 using ForDD.API;
+using ForDD.Domain.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.DefaultSection));
+
 builder.Services.AddControllers();
+
+builder.Services.AddAuthenticationAndAuthorization(builder);
 builder.Services.AddSwagger();
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
