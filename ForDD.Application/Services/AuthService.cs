@@ -89,6 +89,8 @@ namespace ForDD.Application.Services
                     userToken.RefreshToken = refreshToken;
                     userToken.RefreshTokenExpireTime = DateTime.UtcNow.AddDays(7);
 
+                    await _userTokenRepository.UpdateAsync(userToken);
+
                 }
 
                 return new BaseResult<TokenDto>()
