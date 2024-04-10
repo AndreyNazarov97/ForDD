@@ -77,6 +77,7 @@ namespace ForDD.Application.Services
                 {
                     userToken = new UserToken()
                     {
+                        UserId = user.Id,
                         RefreshToken = refreshToken,
                         RefreshTokenExpireTime = DateTime.UtcNow.AddDays(7),
 
