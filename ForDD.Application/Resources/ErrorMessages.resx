@@ -144,6 +144,9 @@
   <data name="RoleNotExist" xml:space="preserve">
     <value>Role not exist</value>
   </data>
+  <data name="RoleNotFound" xml:space="preserve">
+    <value>Role not found</value>
+  </data>
   <data name="UserAlreadyExist" xml:space="preserve">
     <value>User Already exist</value>
   </data>

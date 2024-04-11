@@ -142,6 +142,15 @@ namespace ForDD.Application.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Role not found.
+        /// </summary>
+        internal static string RoleNotFound {
+            get {
+                return ResourceManager.GetString("RoleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на User Already exist.
         /// </summary>
         internal static string UserAlreadyExist {

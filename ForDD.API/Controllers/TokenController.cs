@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ForDD.API.Controllers
 {
     [ApiController]
-    public class TokenController : Controller
+    public class TokenController : ControllerBase
     {
         private readonly ITokenService _tokenService;
 
