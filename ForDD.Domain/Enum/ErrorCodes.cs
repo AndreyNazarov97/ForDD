@@ -17,9 +17,13 @@ namespace ForDD.Domain.Enum
         InternalServerError = 10,
 
         UserNotFound = 11,
+        UserUnauthorizedAccess = 12,
 
         PasswordsNotEqual = 21,
         UserAlreadyExist = 22,
         WrongPassword = 23,
+
+        RoleAlreadyExist = 31,
+        RoleNotExist = 32,
     }
 }

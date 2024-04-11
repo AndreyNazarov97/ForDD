@@ -124,6 +124,24 @@ namespace ForDD.Application.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Role already exist.
+        /// </summary>
+        internal static string RoleAlreadyExist {
+            get {
+                return ResourceManager.GetString("RoleAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Role not exist.
+        /// </summary>
+        internal static string RoleNotExist {
+            get {
+                return ResourceManager.GetString("RoleNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на User Already exist.
         /// </summary>
         internal static string UserAlreadyExist {

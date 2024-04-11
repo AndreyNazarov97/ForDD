@@ -28,6 +28,7 @@ namespace ForDD.Application.DependencyInjection
             services.AddScoped<IValidator<UpdateReportDto>, UpdateReportValidator>();
             
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
 

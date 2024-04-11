@@ -161,15 +161,13 @@ namespace ForDD.Application.Services
                     ErrorMessage = ErrorMessages.InternalServerError,
                     ErrorCode = ((int)ErrorCodes.InternalServerError)
                 };
-            }
-
-            
+            } 
         }
 
         private string HashPassword(string password)
         {
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-            return BitConverter.ToString(bytes).ToLower();
+            return Convert.ToBase64String(bytes);
         }
 
         private bool IsVerifyPassword(string password, string hashedPassword)

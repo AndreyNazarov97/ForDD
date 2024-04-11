@@ -17,6 +17,8 @@ namespace ForDD.Domain.Entity
 
         public List<Report> Reports { get; set; }
 
+        public List<Role> Roles { get; set; }
+
         public UserToken Token { get; set; }
 
         public long CreatedBy { get; set; }

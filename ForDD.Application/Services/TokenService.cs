@@ -60,6 +60,8 @@ namespace ForDD.Application.Services
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey)),
                 ValidateLifetime = true,
+                ValidAudience = _audience,
+                ValidIssuer = _issuer,
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var claimsPrincipal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
