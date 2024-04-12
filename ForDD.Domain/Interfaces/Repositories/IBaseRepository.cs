@@ -10,11 +10,13 @@ namespace ForDD.Domain.Interfaces.Repositories
     {
         IQueryable<TEntity> GetAll();
 
+        Task<int> SaveChangesAsync();
+
         Task<TEntity> CreateAsync(TEntity entity);
 
-        Task<TEntity> UpdateAsync(TEntity entity);
+        TEntity Update(TEntity entity);
 
-        Task<TEntity> DeleteAsync(TEntity entity);
+        void Delete(TEntity entity);
 
     }
 }

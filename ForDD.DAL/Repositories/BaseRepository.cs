@@ -24,12 +24,12 @@ namespace ForDD.DAL.Repositories
             }
 
             await _context.AddAsync(entity);
-            await _context.SaveChangesAsync(); ;
+            
 
             return entity;
         }
 
-        public async Task<TEntity> DeleteAsync(TEntity entity)
+        public void Delete(TEntity entity)
         {
             if (entity == null)
             {
@@ -37,9 +37,6 @@ namespace ForDD.DAL.Repositories
             }
 
             _context.Remove(entity);
-            await _context.SaveChangesAsync();
-
-            return entity;
         }
 
         public IQueryable<TEntity> GetAll()
@@ -47,7 +44,12 @@ namespace ForDD.DAL.Repositories
             return _context.Set<TEntity>();
         }
 
-        public async Task<TEntity> UpdateAsync(TEntity entity)
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
+        public  TEntity Update(TEntity entity)
         {
             if (entity == null)
             {
@@ -55,7 +57,7 @@ namespace ForDD.DAL.Repositories
             }
 
             _context.Update(entity);
-            await _context.SaveChangesAsync();
+            
 
             return entity;
         }

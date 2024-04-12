@@ -112,7 +112,8 @@ namespace ForDD.Application.Services
             }
 
            
-            await _roleRepository.DeleteAsync(role);
+            _roleRepository.Delete(role);
+            await _roleRepository.SaveChangesAsync();
 
             return new BaseResult<RoleDto>()
             {
@@ -134,7 +135,8 @@ namespace ForDD.Application.Services
 
             role.Name = dto.Name;
 
-            await _roleRepository.UpdateAsync(role);
+            var updatedRole = _roleRepository.Update(role);
+            await _roleRepository.SaveChangesAsync();
 
             return new BaseResult<RoleDto>()
             {

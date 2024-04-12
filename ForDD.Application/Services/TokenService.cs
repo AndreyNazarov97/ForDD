@@ -97,7 +97,9 @@ namespace ForDD.Application.Services
             var newRefreshToken = GenerateRefreshToken();
 
             user.Token.RefreshToken = newRefreshToken;
-            await _userRepository.UpdateAsync(user);
+            var updatedUser = _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+
 
             return new BaseResult<TokenDto>()
             {

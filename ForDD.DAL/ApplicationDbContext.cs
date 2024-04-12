@@ -1,13 +1,6 @@
-﻿using ForDD.DAL.Configurations;
-using ForDD.DAL.Interceptors;
-using ForDD.Domain.Entity;
+﻿using ForDD.DAL.Interceptors;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForDD.DAL
 {
