@@ -23,7 +23,6 @@ namespace ForDD.Application.Services
         private readonly IBaseRepository<UserToken> _userTokenRepository;
         private readonly IBaseRepository<Role> _roleRepository;
         private readonly ITokenService _tokenService;
-        private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
         public AuthService(IBaseRepository<User> userRepository,
@@ -38,7 +37,6 @@ namespace ForDD.Application.Services
             _userRepository = userRepository;
             _userTokenRepository = userTokenRepository;
             _tokenService = tokenService;
-            _logger = logger;
             _mapper = mapper;
             _roleRepository = roleRepository;
             _unitOfWork = unitOfWork;
@@ -61,7 +59,7 @@ namespace ForDD.Application.Services
                 };
             }
 
-            if (!IsVerifyPassword(user.Password, dto.Password))
+            if (!IsVerifyPassword(dto.Password, user.Password))
             {
                 return new BaseResult<TokenDto>()
                 {
