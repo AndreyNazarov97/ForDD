@@ -4,10 +4,13 @@ using Serilog;
 using ForDD.API;
 using ForDD.Domain.Settings;
 using ForDD.API.Middlewares;
+using ForDD.Producer.DependencyInjection;
+using ForDD.Consumer.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.DefaultSection));
+builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection(nameof(RabbitMqSettings)));
 
 builder.Services.AddControllers();
 
@@ -16,8 +19,11 @@ builder.Services.AddSwagger();
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
+
 builder.Services.AddDataAccesLayer(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddProducer();
+builder.Services.AddConsumer();
 
 var app = builder.Build();
 

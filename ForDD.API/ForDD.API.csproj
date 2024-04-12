@@ -23,7 +23,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ForDD.Application\ForDD.Application.csproj" />
+    <ProjectReference Include="..\ForDD.Consumer\ForDD.Consumer.csproj" />
     <ProjectReference Include="..\ForDD.DAL\ForDD.DAL.csproj" />
+    <ProjectReference Include="..\ForDD.Producer\ForDD.Producer.csproj" />
   </ItemGroup>
 
 </Project>

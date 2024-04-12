@@ -18,6 +18,7 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\ForDD.Domain\ForDD.Domain.csproj" />
+    <ProjectReference Include="..\ForDD.Producer\ForDD.Producer.csproj" />
   </ItemGroup>
 	
   <ItemGroup>

@@ -7,7 +7,10 @@ using ForDD.Domain.Interfaces.Repositories;
 using ForDD.Domain.Interfaces.Services;
 using ForDD.Domain.Interfaces.Validations;
 using ForDD.Domain.Result;
+using ForDD.Domain.Settings;
+using ForDD.Producer.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace ForDD.Application.Services
@@ -18,20 +21,26 @@ namespace ForDD.Application.Services
         private readonly IBaseRepository<Report> _reportRepository;
         private readonly IBaseRepository<User> _userRepository;
         private readonly IReportValidator _reportValidator;
+        private readonly IMessageProducer _messageProducer;
+        private readonly IOptions<RabbitMqSettings> _rabbitMqSettings;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
         public ReportService(IBaseRepository<Report> reportRepository,
             IBaseRepository<User> userRepository,
             IReportValidator reportValidator,
-            ILogger logger, 
-            IMapper mapper )
+            ILogger logger,
+            IMapper mapper,
+            IMessageProducer messageProducer,
+            IOptions<RabbitMqSettings> rabbitMqSettings)
         {
             _reportRepository = reportRepository;
             _logger = logger;
             _userRepository = userRepository;
             _reportValidator = reportValidator;
             _mapper = mapper;
+            _messageProducer = messageProducer;
+            _rabbitMqSettings = rabbitMqSettings;
         }
 
         /// <inheritdoc/>
@@ -136,6 +145,9 @@ namespace ForDD.Application.Services
                 UserId = user.Id,
             };
             await _reportRepository.CreateAsync(report);
+            await _reportRepository.SaveChangesAsync();
+
+            _messageProducer.SendMessage(report, _rabbitMqSettings.Value.RoutingKey, _rabbitMqSettings.Value.ExchangeName);
 
             return new BaseResult<ReportDto>()
             {
