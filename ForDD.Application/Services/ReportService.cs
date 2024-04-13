@@ -1,11 +1,16 @@
-﻿using ForDD.Application.Resources;
-using ForDD.Domain.Dto;
+﻿using AutoMapper;
+using ForDD.Application.Resources;
+using ForDD.Domain.Dto.Report;
 using ForDD.Domain.Entity;
 using ForDD.Domain.Enum;
 using ForDD.Domain.Interfaces.Repositories;
 using ForDD.Domain.Interfaces.Services;
+using ForDD.Domain.Interfaces.Validations;
 using ForDD.Domain.Result;
+using ForDD.Domain.Settings;
+using ForDD.Producer.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace ForDD.Application.Services
@@ -14,25 +19,42 @@ namespace ForDD.Application.Services
     public class ReportService : IReportService
     {
         private readonly IBaseRepository<Report> _reportRepository;
+        private readonly IBaseRepository<User> _userRepository;
+        private readonly IReportValidator _reportValidator;
+        private readonly IMessageProducer _messageProducer;
+        private readonly IOptions<RabbitMqSettings> _rabbitMqSettings;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
-        public ReportService(IBaseRepository<Report> reportRepository, ILogger logger)
+        public ReportService(IBaseRepository<Report> reportRepository,
+            IBaseRepository<User> userRepository,
+            IReportValidator reportValidator,
+            ILogger logger,
+            IMapper mapper,
+            IMessageProducer messageProducer,
+            IOptions<RabbitMqSettings> rabbitMqSettings)
         {
             _reportRepository = reportRepository;
             _logger = logger;
+            _userRepository = userRepository;
+            _reportValidator = reportValidator;
+            _mapper = mapper;
+            _messageProducer = messageProducer;
+            _rabbitMqSettings = rabbitMqSettings;
         }
 
         /// <inheritdoc/>
         public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId)
         {
-            ReportDto[] reports;
+            ReportDto[] reportsDto;
 
             try
             {
-                reports = await _reportRepository.GetAll()
+                var reports = await _reportRepository.GetAll()
                     .Where(x => x.UserId == userId)
-                    .Select(r => new ReportDto(r.Id, r.Name, r.Description, r.CreatedAt.ToLongDateString()))
                     .ToArrayAsync();
+
+                reportsDto = reports.Select(r => new ReportDto(r.Id, r.Name, r.Description, r.CreatedAt.ToLongDateString())).ToArray();
             }
             catch (Exception ex)
             {
@@ -45,9 +67,9 @@ namespace ForDD.Application.Services
                 };
             }
 
-            if (!reports.Any())
+            if (!reportsDto.Any())
             {
-                _logger.Warning(ErrorMessages.ReportsNotFound, reports.Length);
+                _logger.Warning(ErrorMessages.ReportsNotFound, reportsDto.Length);
 
                 return new CollectionResult<ReportDto>()
                 {
@@ -57,21 +79,22 @@ namespace ForDD.Application.Services
             }
             return new CollectionResult<ReportDto>()
             {
-                Data = reports,
-                Count = reports.Length
+                Data = reportsDto,
+                Count = reportsDto.Length
             };
         }
 
         /// <inheritdoc/>
-        public async Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
+        public  async Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
         {
-            ReportDto report;
+            ReportDto reportDto;
 
             try
             {
-                report = await _reportRepository.GetAll()
-                    .Select(r => new ReportDto(r.Id, r.Name, r.Description, r.CreatedAt.ToLongDateString()))
+                var report = await _reportRepository.GetAll()
                     .FirstOrDefaultAsync(x => x.Id == id);
+
+                reportDto = new ReportDto(report.Id, report.Name, report.Description, report.CreatedAt.ToLongDateString());
             }
             catch(Exception ex) 
             {
@@ -84,9 +107,9 @@ namespace ForDD.Application.Services
                 };
             }
 
-            if (report == null)
+            if (reportDto == null)
             {
-                _logger.Warning($"Report with {id} not found");
+                _logger.Warning($"Report with id:{id} not found", id);
 
                 return new BaseResult<ReportDto>()
                 {
@@ -94,6 +117,91 @@ namespace ForDD.Application.Services
                     ErrorCode = ((int)ErrorCodes.ReportNotFound)
                 };
             }
+
+            return new BaseResult<ReportDto>()
+            {
+                Data = reportDto,
+            };
+        }
+
+        /// <inheritdoc/>
+        public async Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto dto)
+        {
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == dto.UserId);
+            var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Name == dto.Name);
+            var result = _reportValidator.CreateValidator(report, user);
+            if (!result.IsSuccess)
+            {
+                return new BaseResult<ReportDto>()
+                {
+                    ErrorMessage = result.ErrorMessage,
+                    ErrorCode = result.ErrorCode,
+                };
+            }
+            report = new Report()
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                UserId = user.Id,
+            };
+            await _reportRepository.CreateAsync(report);
+            await _reportRepository.SaveChangesAsync();
+
+            _messageProducer.SendMessage(report, _rabbitMqSettings.Value.RoutingKey, _rabbitMqSettings.Value.ExchangeName);
+
+            return new BaseResult<ReportDto>()
+            {
+                Data = _mapper.Map<ReportDto>(report),
+            };
+
+        }
+
+        /// <inheritdoc/>
+        public async Task<BaseResult<ReportDto>> DeleteReportByIdAsync(long id)
+        {
+            var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+            var result = _reportValidator.ValidateOnNull(report);
+            if (!result.IsSuccess)
+            {
+                return new BaseResult<ReportDto>()
+                {
+                    ErrorMessage = result.ErrorMessage,
+                    ErrorCode = result.ErrorCode,
+                };
+            }
+            _reportRepository.Delete(report);
+            await _reportRepository.SaveChangesAsync();
+
+            return new BaseResult<ReportDto>()
+            {
+                Data = _mapper.Map<ReportDto>(report),
+            };
+        }
+
+        /// <inheritdoc/>
+        public async Task<BaseResult<ReportDto>> UpdateReportAsync(UpdateReportDto dto)
+        {
+            var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Id == dto.Id);
+            var result = _reportValidator.ValidateOnNull(report);
+            if (!result.IsSuccess)
+            {
+                return new BaseResult<ReportDto>()
+                {
+                    ErrorMessage = result.ErrorMessage,
+                    ErrorCode = result.ErrorCode,
+                };
+            }
+
+            report.Name = dto.Name;
+            report.Description = dto.Description;
+
+            var updatedReport = _reportRepository.Update(report);
+            await _reportRepository.SaveChangesAsync();
+
+            return new BaseResult<ReportDto>()
+            {
+                Data = _mapper.Map<ReportDto>(report),
+            };
 
         }
     }

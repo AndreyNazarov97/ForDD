@@ -70,6 +70,42 @@ namespace ForDD.Application.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid client request.
+        /// </summary>
+        internal static string InvalidClientRequest {
+            get {
+                return ResourceManager.GetString("InvalidClientRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid token.
+        /// </summary>
+        internal static string InvalidToken {
+            get {
+                return ResourceManager.GetString("InvalidToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Passwords not equal.
+        /// </summary>
+        internal static string PasswordsNotEqual {
+            get {
+                return ResourceManager.GetString("PasswordsNotEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Report already exist.
+        /// </summary>
+        internal static string ReportAlreadyExist {
+            get {
+                return ResourceManager.GetString("ReportAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Report not Found.
         /// </summary>
         internal static string ReportNotFound {
@@ -84,6 +120,60 @@ namespace ForDD.Application.Resources {
         internal static string ReportsNotFound {
             get {
                 return ResourceManager.GetString("ReportsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Role already exist.
+        /// </summary>
+        internal static string RoleAlreadyExist {
+            get {
+                return ResourceManager.GetString("RoleAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Role not exist.
+        /// </summary>
+        internal static string RoleNotExist {
+            get {
+                return ResourceManager.GetString("RoleNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Role not found.
+        /// </summary>
+        internal static string RoleNotFound {
+            get {
+                return ResourceManager.GetString("RoleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User Already exist.
+        /// </summary>
+        internal static string UserAlreadyExist {
+            get {
+                return ResourceManager.GetString("UserAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User not found.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Wrong password.
+        /// </summary>
+        internal static string WrongPassword {
+            get {
+                return ResourceManager.GetString("WrongPassword", resourceCulture);
             }
         }
     }

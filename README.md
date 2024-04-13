@@ -17,3 +17,4 @@ ForDD is a backend part of a daily diary application where users can register, a
 - RabbitMQ
 
 Feel free to explore and use this backend API for your diary application!
+

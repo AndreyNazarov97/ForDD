@@ -12,9 +12,9 @@ namespace ForDD.Domain.Interfaces
 
         public DateTime CreatedAt { get; set; }
 
-        public long UpdatedBy { get; set; } 
+        public long? UpdatedBy { get; set; } 
 
-        public DateTime UpdatedAt { get; set;}
+        public DateTime? UpdatedAt { get; set;}
 
 
     }

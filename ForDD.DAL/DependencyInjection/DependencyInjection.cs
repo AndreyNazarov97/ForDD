@@ -12,12 +12,12 @@ namespace ForDD.DAL.DependencyInjection
     {
         public static void AddDataAccesLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("MSSQL");
+            var connectionString = configuration.GetConnectionString("PostgreSQL");
 
             services.AddSingleton<DateInterceptor>();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                options.UseNpgsql(connectionString);
             }); 
 
             InitRepositories(services);
@@ -25,8 +25,12 @@ namespace ForDD.DAL.DependencyInjection
 
         private static void InitRepositories(this IServiceCollection services)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+            services.AddScoped<IBaseRepository<Role>, BaseRepository<Role>>();
+            services.AddScoped<IBaseRepository<UserRole>, BaseRepository<UserRole>>();
             services.AddScoped<IBaseRepository<Report>, BaseRepository<Report>>();
+            services.AddScoped<IBaseRepository<UserToken>, BaseRepository<UserToken>>();
 
             
         }
