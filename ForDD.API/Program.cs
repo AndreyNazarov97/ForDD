@@ -6,6 +6,7 @@ using ForDD.Domain.Settings;
 using ForDD.API.Middlewares;
 using ForDD.Producer.DependencyInjection;
 using ForDD.Consumer.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,11 @@ builder.Services.AddControllers();
 
 builder.Services.AddAuthenticationAndAuthorization(builder);
 builder.Services.AddSwagger();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "ForDD_";
+} );
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
